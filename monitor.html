@@ -73,7 +73,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   // ✅ 改為從 GitHub Pages 上的靜態 JSON 模擬資料抓取
-  const API_BASE = "/water_management/data";
+  const API_BASE = "./data";
 
   const actualEl = document.getElementById('actual-val');
   const predEl   = document.getElementById('pred-val');
@@ -149,6 +149,7 @@
     try {
       const res = await fetch(`${API_BASE}/status.json`);
       const data = await res.json();
+      const res = await fetch(`${API_BASE}/next.json`);
 
       if (data.status === 'no_data') {
         alertEl.textContent = '📭 尚無足夠資料進行異常判斷';
