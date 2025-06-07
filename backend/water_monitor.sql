@@ -1,0 +1,1 @@
+SELECT * FROM water_monitor.predictions;

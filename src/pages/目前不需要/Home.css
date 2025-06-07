@@ -1,0 +1,23 @@
+.home-container {
+  padding: 2rem;
+  font-family: sans-serif;
+  color: #f8fafc;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #ADADAD;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  color: #3C3C3C;
+  background-color: #7B7B7B;
+}

@@ -1,0 +1,165 @@
+/* 檔案：src/components/HistoricalAlerts.css */
+
+/* 將整個容器寬度限制在 max-width，並水平置中 */
+.history-container {
+  margin: 0 auto;         /* 左右置中 */
+  max-width: 1000px;      /* 或你想要的寬度 */
+  border-radius: 8px;
+  background-color: #1E293B;  /* container 仍維持深藍灰 */
+  box-sizing: border-box;
+}
+
+/* 其餘樣式不變，只留意 .history-container 的改動 */
+.history-header-bar {
+  background-color: #1E293B;
+  padding: 16px 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  text-align: center;
+}
+.history-header-bar h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+/* 篩選區 */
+.history-filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: #1E293B;
+  align-items: center;
+  justify-content: flex-start;
+}
+.history-filters-bar input[type="text"] {
+  flex: 1 1 240px;
+  max-width: 400px;
+  height: 40px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0F172A;
+  color: #FFFFFF;
+  font-size: 0.95rem;
+}
+.history-filters-bar input[type="text"]::placeholder {
+  color: #9CA3AF;
+}
+.history-filters-bar select {
+  flex: 0 0 200px;
+  height: 40px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0F172A;
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  appearance: none;
+  cursor: pointer;
+}
+.history-filters-bar button {
+  flex: 0 0 auto;
+  height: 40px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2563EB;
+  color: #FFFFFF;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.history-filters-bar button:hover {
+  background-color: #1E40AF;
+}
+
+/* 表格外殼 */
+.history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background-color: #1E293B;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.history-table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.history-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+.history-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Table 本體 */
+.history-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+.history-table thead {
+  background-color: #334155;
+}
+.history-table thead th {
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 16px;
+  text-align: left;
+}
+.history-table tbody tr:nth-child(even) {
+  background-color: #1F2937;
+}
+.history-table tbody tr:nth-child(odd) {
+  background-color: #111827;
+}
+.history-table tbody td {
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+/* Level 欄位顏色提示 */
+.history-table tbody td.level-high {
+  color: #EF4444;
+  font-weight: 600;
+}
+.history-table tbody td.level-medium {
+  color: #F59E0B;
+  font-weight: 600;
+}
+.history-table tbody td.level-low {
+  color: #10B981;
+  font-weight: 600;
+}
+
+/* Action 連結樣式 */
+.history-table tbody a {
+  color: #3B82F6;
+  text-decoration: none;
+  font-weight: 500;
+}
+.history-table tbody a:hover {
+  text-decoration: underline;
+}
+
+/* 分頁列 */
+.history-pagination-bar {
+  background-color: #1E293B;
+  padding: 12px 20px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  text-align: center;
+  margin-top: 12px;
+}
+.history-pagination-bar span {
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
