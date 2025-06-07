@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -63,19 +64,16 @@
     </div>
 
     <div class="images">
-      <img src="/static/image1.png" alt="Plot 1">
-      <img src="/static/image2.png" alt="Plot 2">
-      <img src="/static/image3.png" alt="Plot 3">
+      <img src="/water_management/static/image1.png" alt="Plot 1">
+      <img src="/water_management/static/image2.png" alt="Plot 2">
+      <img src="/water_management/static/image3.png" alt="Plot 3">
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     // ✅ 自動偵測本機 or 區網 IP，切換 API base URL
-    const API_BASE =
-      window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-        ? "http://localhost:5000"
-        : "http://192.168.1.224:5000";  // ← 根據你的 Flask 真實 IP 設定
+    const API_BASE = "/water_management";  // ← 根據你的 Flask 真實 IP 設定
 
     const actualEl = document.getElementById('actual-val');
     const predEl   = document.getElementById('pred-val');
