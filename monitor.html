@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -71,104 +70,106 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // ✅ 自動偵測本機 or 區網 IP，切換 API base URL
-    const API_BASE = "/water_management";  // ← 根據你的 Flask 真實 IP 設定
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // ✅ 改為從 GitHub Pages 上的靜態 JSON 模擬資料抓取
+  const API_BASE = "/water_management/data";
 
-    const actualEl = document.getElementById('actual-val');
-    const predEl   = document.getElementById('pred-val');
-    const alertEl  = document.getElementById('anomaly-alert');
-    const fCtx     = document.getElementById('forecast-chart').getContext('2d');
-    const bCtx     = document.getElementById('bar-chart').getContext('2d');
-    const pCtx     = document.getElementById('pie-chart').getContext('2d');
-    const eCtx     = document.getElementById('error-chart').getContext('2d');
+  const actualEl = document.getElementById('actual-val');
+  const predEl   = document.getElementById('pred-val');
+  const alertEl  = document.getElementById('anomaly-alert');
+  const fCtx     = document.getElementById('forecast-chart').getContext('2d');
+  const bCtx     = document.getElementById('bar-chart').getContext('2d');
+  const pCtx     = document.getElementById('pie-chart').getContext('2d');
+  const eCtx     = document.getElementById('error-chart').getContext('2d');
 
-    const maxPoints = 24;
-    let labels = [], actuals = [], preds = [];
+  const maxPoints = 24;
+  let labels = [], actuals = [], preds = [];
 
-    const forecastChart = new Chart(fCtx, {
-      type: 'line',
-      data: { labels, datasets: [
-        { label: 'Actual', data: actuals, borderColor: 'blue', fill: false, pointRadius:4, tension:0 },
-        { label: 'Predicted', data: preds, borderColor: 'red', fill: false, pointRadius:4, tension:0 }
-      ]},
-      options: { animation: false, scales: { x: { title: { display:true, text:'Hour Index' } }, y: { title: { display:true, text:'Usage (m³/h)' } } } }
-    });
+  const forecastChart = new Chart(fCtx, {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Actual', data: actuals, borderColor: 'blue', fill: false, pointRadius:4, tension:0 },
+      { label: 'Predicted', data: preds, borderColor: 'red', fill: false, pointRadius:4, tension:0 }
+    ]},
+    options: { animation: false, scales: { x: { title: { display:true, text:'Hour Index' } }, y: { title: { display:true, text:'Usage (m³/h)' } } } }
+  });
 
-    const barChart = new Chart(bCtx, {
-      type: 'bar',
-      data: { labels, datasets: [ { label: 'Actual Usage', data: actuals, backgroundColor: 'rgba(75,192,192,0.5)' } ] },
-      options: { animation: false, scales: { y: { beginAtZero: true } } }
-    });
+  const barChart = new Chart(bCtx, {
+    type: 'bar',
+    data: { labels, datasets: [ { label: 'Actual Usage', data: actuals, backgroundColor: 'rgba(75,192,192,0.5)' } ] },
+    options: { animation: false, scales: { y: { beginAtZero: true } } }
+  });
 
-    const pieChart = new Chart(pCtx, {
-      type: 'pie',
-      data: { labels: ['Actual','Predicted'], datasets: [ { data: [0,0], backgroundColor: ['#36A2EB','#FF6384'] } ] },
-      options: { animation: false }
-    });
+  const pieChart = new Chart(pCtx, {
+    type: 'pie',
+    data: { labels: ['Actual','Predicted'], datasets: [ { data: [0,0], backgroundColor: ['#36A2EB','#FF6384'] } ] },
+    options: { animation: false }
+  });
 
-    const errorChart = new Chart(eCtx, {
-      type: 'line',
-      data: { labels, datasets: [ { label: 'Error', data: [], borderColor: 'orange', fill: false, pointRadius:3, tension:0 } ] },
-      options: { animation: false, scales: { y: { title: { display:true, text:'Absolute Error' } } } }
-    });
+  const errorChart = new Chart(eCtx, {
+    type: 'line',
+    data: { labels, datasets: [ { label: 'Error', data: [], borderColor: 'orange', fill: false, pointRadius:3, tension:0 } ] },
+    options: { animation: false, scales: { y: { title: { display:true, text:'Absolute Error' } } } }
+  });
 
-    async function fetchData() {
-      try {
-        const res = await fetch(`${API_BASE}/api/next`);
-        const { actual, predicted } = await res.json();
-        const idx = labels.length + 1;
-        labels.push(idx);
-        preds.push(predicted);
-        actuals.push(null);
-        if (actuals.length >= 2) actuals[actuals.length - 2] = actual;
-        if (labels.length > maxPoints) { labels.shift(); actuals.shift(); preds.shift(); }
+  async function fetchData() {
+    try {
+      const res = await fetch(`${API_BASE}/next.json`);
+      const { actual, predicted } = await res.json();
+      const idx = labels.length + 1;
+      labels.push(idx);
+      preds.push(predicted);
+      actuals.push(null);
+      if (actuals.length >= 2) actuals[actuals.length - 2] = actual;
+      if (labels.length > maxPoints) { labels.shift(); actuals.shift(); preds.shift(); }
 
-        const lastActual = actuals[actuals.length - 2];
-        actualEl.textContent = lastActual != null ? lastActual.toFixed(2) : '--';
-        predEl.textContent   = predicted.toFixed(2);
+      const lastActual = actuals[actuals.length - 2];
+      actualEl.textContent = lastActual != null ? lastActual.toFixed(2) : '--';
+      predEl.textContent   = predicted.toFixed(2);
 
-        forecastChart.update();
-        barChart.update();
-        const act = lastActual || 0;
-        const pred = predicted;
-        pieChart.data.datasets[0].data = [act, pred];
-        pieChart.update();
-        const errors = labels.map((_, i) => actuals[i] != null ? Math.abs(actuals[i] - preds[i]) : null);
-        errorChart.data.datasets[0].data = errors;
-        errorChart.update();
+      forecastChart.update();
+      barChart.update();
+      const act = lastActual || 0;
+      const pred = predicted;
+      pieChart.data.datasets[0].data = [act, pred];
+      pieChart.update();
+      const errors = labels.map((_, i) => actuals[i] != null ? Math.abs(actuals[i] - preds[i]) : null);
+      errorChart.data.datasets[0].data = errors;
+      errorChart.update();
 
-        checkAnomaly();
+      checkAnomaly();
 
-      } catch(err) {
-        console.error('Fetch error:', err);
-      }
+    } catch(err) {
+      console.error('Fetch error:', err);
     }
+  }
 
-    async function checkAnomaly() {
-      try {
-        const res = await fetch(`${API_BASE}/api/status`);
-        const data = await res.json();
+  async function checkAnomaly() {
+    try {
+      const res = await fetch(`${API_BASE}/status.json`);
+      const data = await res.json();
 
-        if (data.status === 'no_data') {
-          alertEl.textContent = '📭 尚無足夠資料進行異常判斷';
-          alertEl.style.color = 'gray';
-        } else if (data.anomaly) {
-          alertEl.textContent = `⚠️ 預測異常！誤差 ${data.diff.toFixed(2)}，${data.threshold_desc}`;
-          alertEl.style.color = 'red';
-        } else {
-          alertEl.textContent = `✅ 預測正常：誤差 ${data.diff.toFixed(2)}（${data.threshold_desc}）`;
-          alertEl.style.color = 'green';
-        }
-      } catch (err) {
-        alertEl.textContent = '❌ 異常檢查失敗';
+      if (data.status === 'no_data') {
+        alertEl.textContent = '📭 尚無足夠資料進行異常判斷';
         alertEl.style.color = 'gray';
-        console.error('Anomaly check error:', err);
+      } else if (data.anomaly) {
+        alertEl.textContent = `⚠️ 預測異常！誤差 ${data.diff.toFixed(2)}，${data.threshold_desc}`;
+        alertEl.style.color = 'red';
+      } else {
+        alertEl.textContent = `✅ 預測正常：誤差 ${data.diff.toFixed(2)}（${data.threshold_desc}）`;
+        alertEl.style.color = 'green';
       }
+    } catch (err) {
+      alertEl.textContent = '❌ 異常檢查失敗';
+      alertEl.style.color = 'gray';
+      console.error('Anomaly check error:', err);
     }
+  }
 
-    setInterval(fetchData, 5000);
-    fetchData();
-  </script>
+  setInterval(fetchData, 5000);
+  fetchData();
+</script>
+
 </body>
 </html>
