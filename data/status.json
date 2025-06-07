@@ -1,6 +1,6 @@
 {
   "status": "ok",
   "anomaly": false,
-  "diff": 0.21,
+  "diff": 0.4,
   "threshold_desc": "誤差小於 1.0"
 }
